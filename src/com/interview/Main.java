@@ -1,20 +1,15 @@
 package com.interview;
 
-import com.interview.leetcodes.IntToRoman;
+import com.interview.leetcodes.*;
 
 import java.util.Scanner;
 
 public class Main {
     public static void main(String[] args) {
-        IntToRoman s = new IntToRoman();
-        Write(s.intToRoman(3));
-        Write(s.intToRoman(3999));
-        Write(s.intToRoman(3455));
-        Write(s.intToRoman(3444));
-        Write(s.intToRoman(1));
-        Write(s.intToRoman(4));
+        threeSumClose s = new threeSumClose();
 
-        Write(s.intToRoman(1999));
+        Write(s.threeSumClosest(new int[] { -1, 2, 1, -4, 1}, 1));
+
         Scanner in = new Scanner(System.in);
         String input  = in.nextLine();
     }
