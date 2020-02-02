@@ -1,7 +1,6 @@
 package com.interview.leetcodes;
 
-import java.text.MessageFormat;
-
+//I've just massively overcomplicated this but only because I'm trying to get more familiar with Java and see how it stacks up to C#
 public class IntToRoman {
     public String intToRoman(int num) {
         StringBuilder b = new StringBuilder();
@@ -22,32 +21,50 @@ public class IntToRoman {
         Ones ones = new Ones();
         ones.collect(rem);
 
-
-
         b.append(this.romanize(thousands, hundreds));
         b.append(this.romanize(hundreds, tens));
-        b.append(romanize(tens, ones));
-        b.append(romanize(ones, null));
+        b.append(this.romanize(tens, ones));
+        b.append(this.romanize(ones, null));
 
         return b.toString();
     }
 
     private String romanize(RomanBase romanBase, RomanBase nextBase) {
-        MessageFormat f = new MessageFormat("{0}{1}");
-
-        if (romanBase.value == 1 && nextBase.value == 9) {
-            romanBase.value=0;
-            nextBase.value= 0;
-            f.applyPattern("");
-        } else if (value == 1) {
-            b.append("M");
+        StringBuilder b = new StringBuilder();
+        while (romanBase.numericValue > 0) {
+            if (romanBase.numericValue > 5) {
+                b.append(romanBase.getFiver());
+                romanBase.numericValue-=5;
+            }
+            else if (romanBase.numericValue == 5) {
+                b.append(romanBase.getFiver());
+                romanBase.numericValue = 0;
+            } else if (romanBase.numericValue == 4) {
+                b.append(romanBase.getValue());
+                b.append(romanBase.getFiver());
+                romanBase.numericValue = 0;
+            } else if (romanBase.numericValue == 1 && nextBase == null) {
+                b.append(romanBase.getValue());
+                return b.toString();
+            } else if (romanBase.numericValue == 1) {
+                b.append(romanBase.getValue());
+                romanBase.numericValue = 0;
+            } else {
+                while (romanBase.numericValue > 1) {
+                    b.append(romanBase.getValue());
+                    romanBase.numericValue--;
+                }
+            }
         }
 
-        while (value > 1) {
-            b.append(base.getValue());
-            value--;
+        if (nextBase != null && romanBase.numericValue == 0 && nextBase.numericValue == 9) {
+            nextBase.numericValue = 0;
+            b.append(romanBase.getModifier());
+            b.append(romanBase.getValue());
+            return b.toString();
         }
-        return value;
+
+        return b.toString();
     }
 
     private interface IRomanBase {
@@ -58,18 +75,18 @@ public class IntToRoman {
         String getFiver();
     }
 
-    private abstract class RomanBase implements IRomanBase {
-        protected int value;
+    public abstract static class RomanBase implements IRomanBase {
+        protected int numericValue;
 
         protected abstract int getBaseValue();
 
         public int collect(int value) {
-            this.value = value / this.getBaseValue();
+            this.numericValue = value / this.getBaseValue();
             return value % this.getBaseValue();
         }
     }
 
-    private class Thousands extends RomanBase {
+    private static class Thousands extends RomanBase {
         @Override
         protected int getBaseValue() {
             return 1000;
@@ -88,14 +105,14 @@ public class IntToRoman {
         }
     }
 
-    private class Hundreds extends RomanBase {
+    private static class Hundreds extends RomanBase {
         @Override
         protected int getBaseValue() {
             return 100;
         }
 
         public String getFiver() {
-            return "L";
+            return "D";
         }
 
         public String getValue() {
@@ -107,7 +124,7 @@ public class IntToRoman {
         }
     }
 
-    private class Tens extends RomanBase {
+    private static class Tens extends RomanBase {
         @Override
         protected int getBaseValue() {
             return 10;
@@ -126,7 +143,7 @@ public class IntToRoman {
         }
     }
 
-    private class Ones extends RomanBase {
+    private static class Ones extends RomanBase {
         @Override
         protected int getBaseValue() {
             return 1;
