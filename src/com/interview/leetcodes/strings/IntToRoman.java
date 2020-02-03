@@ -1,4 +1,4 @@
-package com.interview.leetcodes;
+package com.interview.leetcodes.strings;
 
 //I've just massively overcomplicated this but only because I'm trying to get more familiar with Java and see how it stacks up to C#
 public class IntToRoman {
@@ -68,11 +68,11 @@ public class IntToRoman {
     }
 
     private interface IRomanBase {
-        String getValue();
+        String getValue ();
 
-        String getModifier();
+        String getModifier ();
 
-        String getFiver();
+        String getFiver ();
     }
 
     public abstract static class RomanBase implements IRomanBase {

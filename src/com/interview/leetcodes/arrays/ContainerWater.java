@@ -1,4 +1,4 @@
-package com.interview.leetcodes;
+package com.interview.leetcodes.arrays;
 
 public class ContainerWater {
     public Integer maxArea(int[] height) {
